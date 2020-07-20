@@ -1,0 +1,29 @@
+Q: Which of these are fruits?
+O: Cabbage, Tomato, Apple, Maize
+A: C
+T: MULTI
+
+Q: CSS if for styling HTML?
+O: True, False
+A: A
+T: SINGLE
+
+Q: Which of these are Vegetables?
+O: Lemon, Cucumber, Mint, Maize
+A: B,C,D
+T: MULTI
+
+Q: Which of these are valid colours?
+O: Peach, Pale, Blank, Orange
+A: A,D
+T: MULTI
+
+Q: an apple is a vegetable?
+O: True, False
+A: B
+T: SINGLE
+
+Q: Which of these are valid html tags?
+O: <a></a>, <c></c>, <d></d>, <e></e>
+A: A
+T: MULTI
