@@ -36,6 +36,18 @@ var addClickEventListener = function() {
         });
     });
 
+    secondaryBtns.forEach(sb => {
+        groupedCheckboxes.forEach(gc => {
+            var className = sb.getAttribute('class');
+            if (className && className.split(' ')[1] && className.split(' ')[1] === gc[0].getAttribute('class')) {
+                sb.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    clearSingleQuestionSet(e);
+                })
+            }
+        });
+    });
+
 
 }
 
@@ -50,8 +62,31 @@ var isCurrentlyChecked = function(checkedNodes, node) {
     return status;
 }
 
-var clearSingleQuestionSet = function() {
-    console.log('clearSingleQuestionSet');
+var clearSingleQuestionSet = function(e) {
+    var clickedButton = e.target.className;;
+    var options = document.querySelectorAll(`input.${clickedButton.split(" ")[1]}`);
+    var btnPrimary = document.querySelector(`.${clickedButton.split(" ")[1]}.primary-btn`);
+    var explanation = document.querySelector(`.${clickedButton.split(" ")[1]}.explanation`);
+
+
+    explanation.classList.remove('incorrect-explanation');
+    explanation.classList.remove('correct-explanation');
+    document.querySelector(`.explanation img`).remove();
+    document.querySelector(`.explanation b`).remove();
+
+    explanation.style.display = 'none';
+
+
+    btnPrimary.classList.remove('primary-btn-disabled');
+    btnPrimary.disabled = false;
+
+
+    options.forEach(opt => {
+        opt.checked = false;
+        opt.disabled = false;
+        opt.parentNode.classList.remove('incorrect-ans');
+        opt.parentNode.classList.remove('correct-ans');
+    });
 }
 
 
