@@ -33,18 +33,30 @@
 
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
+                        <h1>Choose question type <span class="warning">(Before uploading a file)</span></h1>
+
+                        <input type="radio" id="question-type-single" onchange="getChecked()" name="question-type" value="single">
+                        <label for="question-type-single">Single Question</label>
+                        <br>
+                        <input type="radio" id="question-type-multi" onchange="getChecked()" name="question-type" value="multi">
+                        <label for="question-type-multi">Multi Question</label>
+                    </div>
+                    <hr>
+                    <div class="card-body toggle hide">
                         <h1>Upload text file</h1>
                         <input type="file" name="file" id="file" class="inputfile" />
                         <label for="file">Choose a file</label>
                     </div>
+
                 </div>
                 <div class="bottom">
                     <div class="card results " style="width: 18rem;">
                         <div class="card-body">
                             <h1>HTML ouput</h1>
-                            <button type="button" class="btn btn-primary" onclick="copyTextToClipboard()">Copy text</button>
+                            <a href='#' type="button" class="btn btn-primary" id="link">Download</a>
 
-                            <div class="html-output"> </div>
+                            <!-- <button type="button" class="btn btn-primary" onclick="copyTextToClipboard()">Copy text</button> -->
+                            <!-- <div class="html-output"> </div> -->
                             <br />
                         </div>
                     </div>
@@ -55,7 +67,7 @@
 
                 <div class="card results" style="width: 18rem;">
                     <div class="card-body">
-                        <h1>Results</h1>
+                        <h1><b>Output file: </b> <span class="warning file-id"></span></h1>
                         <div class="content">
                             <div class="questions"></div>
                         </div>
@@ -63,8 +75,6 @@
                 </div>
             </div>
         </div>
-
-
 </body>
 
 </html>

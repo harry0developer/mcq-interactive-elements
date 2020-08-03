@@ -1,7 +1,13 @@
 window.onload = function() {
+
+    filename = 'test.html';
+    questionType = 'single';
     var input = document.getElementById('file');
+
     if (input) {
-        input.addEventListener('change', function() {
+        input.addEventListener('change', function(a) {
+            filename = a.target.value.split("\\")[2].split('.')[0] + '.html';
+            document.querySelector('.file-id').innerText = filename;
             var fr = new FileReader();
             fr.onload = function() {
                 convertToHTML(fr.result);
@@ -25,6 +31,7 @@ window.onload = function() {
             question: "",
             options: "",
             answer: "",
+            explanation: "",
             type: ""
         };
 
@@ -40,6 +47,8 @@ window.onload = function() {
                     questionObj.answer = qa[1].trim();
                 } else if (qa[0] === 'T') {
                     questionObj.type = qa[1].trim();
+                } else if (qa[0] === 'R') {
+                    questionObj.explanation = qa[1].trim();
                 }
             });
 
@@ -54,39 +63,48 @@ window.onload = function() {
                 // this.generateShortQuestion();
             }
 
-
         });
 
-        // writeToFile(htmlQuizCollection);
 
-        createHTMLOutput(htmlQuizCollection);
+
+        if (questionType.toLowerCase() === 'multi') {
+            var q = document.querySelector('.questions');
+            var primaryBtn = addButton('Check answer', 'primary-btn');
+            var secBtn = addButton('Clear answer', 'secondary-btn');
+            // qdiv.appendChild(primaryBtn);
+            // qdiv.appendChild(secBtn);
+            q.appendChild(primaryBtn);
+            q.appendChild(secBtn);
+
+            htmlQuizCollection.push(primaryBtn);
+            htmlQuizCollection.push(secBtn);
+        }
+
+        writeToFile(htmlQuizCollection);
+
+        // createHTMLOutput(htmlQuizCollection);
 
     }
 
-
-    var addSlash = function() {
-        var newInput = document.getElementById("theDate");
-        newInput.addEventListener('keydown', function(e) {
-            if (e.which !== 8) {
-                var numChars = e.target.value.length;
-                if (numChars === 2 || numChars === 5) {
-                    var thisVal = e.target.value;
-                    thisVal += '/';
-                    e.target.value = thisVal;
-                }
-            }
-        });
-    }
 
     var generateInputTypeQuestion = function(type, index, obj) {
         var questions = document.querySelector(".questions");
+        console.log(obj);
         if (type == "radio") {
+            var qdiv = document.createElement("div");
+            if (questionType.toLowerCase() === 'single') {
+                qdiv.className = "question single question-" + index;
+            } else {
+                qdiv.className = "question multi question-" + index;
+            }
+
             var questionPara = document.createElement('p');
             var questionDiv = document.createElement('div');
             questionDiv.className = 'question';
             questionPara.innerHTML = `<b>Question ${index+1}: </b> ${obj.question}`;
 
-            questions.appendChild(questionPara);
+            // questions.appendChild(questionPara);
+            qdiv.appendChild(questionPara);
 
             var options = obj.options.trim().split(",");
             var correctAnswer = getAnswerNumber(obj);
@@ -104,21 +122,47 @@ window.onload = function() {
                 label.innerText = opt.trim();
 
                 var br = document.createElement("br");
-                questions.appendChild(inputItem);
-                questions.appendChild(label);
-                questions.appendChild(br);
+                // questions.appendChild(inputItem);
+                // questions.appendChild(label);
+                // questions.appendChild(br);
+
+                qdiv.appendChild(inputItem);
+                qdiv.appendChild(label);
+                qdiv.appendChild(br);
 
             });
 
-            var answerDiv = document.createElement("div");
-            answerDiv.className = "answer";
-            questions.appendChild(answerDiv);
+            var explanation = document.createElement("p");
+            explanation.className = "explanation";
+            explanation.innerText = obj.explanation
+            qdiv.appendChild(explanation);
+
+            if (questionType.toLowerCase() === 'single') {
+                var primaryBtn = addButton('Check answer', 'primary-btn');
+                var secBtn = addButton('Clear answer', 'secondary-btn');
+
+                qdiv.appendChild(primaryBtn);
+                qdiv.appendChild(secBtn);
+            }
+
+
+            questions.appendChild(qdiv);
 
         } else {
+
+            var qdiv = document.createElement("div");
+            if (questionType.toLowerCase() === 'single') {
+                qdiv.className = "question single question-" + index;
+            } else {
+                qdiv.className = "question multi question-" + index;
+            }
+
+
             var questionPara = document.createElement('p');
             questionPara.innerHTML = `<b>Question ${index+1}: </b> ${obj.question}`;
 
-            questions.appendChild(questionPara);
+            qdiv.appendChild(questionPara);
+            // questions.appendChild(questionPara);
 
             var options = obj.options.split(",");
             var answers = obj.answer.split(",");
@@ -167,16 +211,39 @@ window.onload = function() {
                 label.innerText = opt.trim();
                 var br = document.createElement("br");
 
-                questions.appendChild(inputItem);
-                questions.appendChild(label);
-                questions.appendChild(br);
+                // questions.appendChild(inputItem);
+                // questions.appendChild(label);
+                // questions.appendChild(br);
+
+                qdiv.appendChild(inputItem);
+                qdiv.appendChild(label);
+                qdiv.appendChild(br);
             });
 
-            var answerDiv = document.createElement("div");
-            answerDiv.className = "answer";
-            questions.appendChild(answerDiv);
+            var explanation = document.createElement("p");
+            explanation.className = "explanation";
+            explanation.innerText = obj.explanation
+            qdiv.appendChild(explanation);
+
+            if (questionType.toLowerCase() === 'single') {
+                var primaryBtnClasses = 'primary-btn ' + `checkbox-${index}`;
+                var secBtnClasses = 'secondary-btn ' + `checkbox-${index}`;
+                var primaryBtn = addButton('Check answer', primaryBtnClasses);
+                var secBtn = addButton('Clear answer', secBtnClasses);
+                qdiv.appendChild(primaryBtn);
+                qdiv.appendChild(secBtn);
+            }
+            questions.appendChild(qdiv);
         }
         return questions;
+    }
+
+
+    addButton = function(text, className) {
+        var btn = document.createElement("button");
+        btn.innerHTML = text;
+        btn.className = className;
+        return btn;
     }
 
     getAnswerNumber = function(obj) {
@@ -204,15 +271,10 @@ window.onload = function() {
 
     createHTMLOutput = function(text) {
         var html = document.querySelector('.html-output');
-
         const el = document.createElement('textarea');
         el.value = text[0].outerHTML;
         el.setAttribute('readonly', '');
         html.appendChild(el);
-
-        // html.innerText = text[0].outerHTML;
-        // console.log(blob);
-
     }
 
     copyTextToClipboard = function() {
@@ -222,13 +284,19 @@ window.onload = function() {
         document.execCommand("copy");
     }
 
-    function isHidden() {
-        var content = document.querySelector('.questions').innerText;
-        console.log(content);
-        if (content) {
-            return true;
-        }
-        return false;
+
+    writeToFile = function(text) {
+        var link = document.querySelector('#link');
+        link.setAttribute('download', filename);
+        let blob = new Blob([text[0].outerHTML], { type: 'plain/text' });
+        link.href = URL.createObjectURL(blob);
     }
 
+    getChecked = function() {
+        questionType = document.querySelector('input[name="question-type"]:checked').value;
+        if (questionType.toLowerCase() == 'single' || questionType.toLowerCase() == 'multi') {
+            var t = document.querySelector('.toggle');
+            t.className = 'card-body toggle';
+        }
+    }
 }

@@ -1,29 +1,35 @@
 Q: Which of these are fruits?
 O: Cabbage, Tomato, Apple, Maize
 A: C
+R: Only Cabbage is is a vegetable
 T: MULTI
 
 Q: CSS if for styling HTML?
 O: True, False
 A: A
+R: CSS is used for styling HTML
 T: SINGLE
 
 Q: Which of these are Vegetables?
 O: Lemon, Cucumber, Mint, Maize
 A: B,C,D
+R: Lemon is not a vegetable
 T: MULTI
 
 Q: Which of these are valid colours?
 O: Peach, Pale, Blank, Orange
 A: A,D
+R: Peach and Orange are valid colours
 T: MULTI
 
-Q: an apple is a vegetable?
+Q: An apple is a vegetable?
 O: True, False
 A: B
+R: An apple is a fruit
 T: SINGLE
 
 Q: Which of these are valid html tags?
 O: <a></a>, <c></c>, <d></d>, <e></e>
 A: A
+R: an anchor tag (<a>) is a valid html tag
 T: MULTI

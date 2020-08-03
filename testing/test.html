@@ -4,154 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./generic-styles.css">
+    <script src="./generic-scripts.js"></script>
     <title>Document</title>
 
-    <style>
-        .btn {
-            width: 180px;
-            padding: 10px;
-            border: none;
-            background-color: #008cff;
-            border-radius: 4px;
-            color: #fff;
-            font-size: 16px;
-        }
-        
-        .correct {
-            background-color: rgb(80, 159, 80);
-            color: #fff;
-            font-size: 18px;
-            padding: 20px;
-        }
-        
-        .incorrect {
-            background-color: rgb(160, 38, 38);
-            color: #fff;
-            font-size: 18px;
-            padding: 20px;
-        }
-        
-        .correct-ans {
-            font-weight: bold;
-            color: green !important;
-        }
-        
-        .incorrect-ans {
-            font-weight: bold;
-            color: red !important;
-        }
-    </style>
-    <script>
-        var isCurrentlyChecked = function(checkedNodes, node) {
-            var status = false;
-            console.log(checkedNodes);
-            checkedNodes.forEach(c => {
-                if (c.isSameNode(node)) {
-                    status = true;
-                }
-            });
-            return status;
-        }
-        var validateQuiz = function() {
-
-            // 1. select all checked options
-            var checkedCheckboxes = document.querySelectorAll('input[type=checkbox]:checked');
-            var groupedCheckboxes = [];
-
-            console.log(checkedCheckboxes);
-
-
-            // 2. group all options
-            for (var i = 0; i < 100; i++) {
-                if (document.querySelector(`.checkbox-${i}`)) {
-                    groupedCheckboxes.push(document.querySelectorAll(`.checkbox-${i}`));
-                }
-            }
-
-            var checkedNodes = [];
-            var status = 'correct';
-
-
-            checkedCheckboxes.forEach(c => {
-                if (c.getAttribute('data-checked') === "checked") {
-                    // console.log(c, 'correct');
-                    var label = document.querySelector(`label[for=${c.getAttribute('id')}]`);
-                    label.className += ' correct-ans';
-                } else {
-                    // console.log(c, 'incorrect');
-                    var label = document.querySelector(`label[for=${c.getAttribute('id')}]`);
-                    label.className += ' incorrect-ans';
-                    status = 'incorrect'
-
-                }
-            })
-
-            // 3. vaidate grouped options [ [op1,op2,op3,op4], [op1,op2,op3,op4], ...]
-            // groupedCheckboxes.forEach(groupChecked => {
-            //     groupChecked.forEach(c => {
-            //         if (c.getAttribute('data-checked') === "checked") {
-            //             var isChecked = isCurrentlyChecked(checkedCheckboxes, c);
-            //             console.log(isChecked);
-
-            //             if (isChecked) {
-
-            //             } else {
-            //                 console.log(c);
-
-            //                 status = 'incorrect';
-
-            //             }
-            //         } 
-            //     });
-            // });
-
-
-            var statusDiv = document.querySelector('.status');
-            var p = document.createElement('p');
-            p.className = status === 'correct' ? 'correct' : 'incorrect';
-            p.innerText = status;
-            if (statusDiv && statusDiv.hasChildNodes()) {
-                console.log(statusDiv.childNodes);
-                statusDiv.removeChild(statusDiv.childNodes[0])
-            }
-            statusDiv.appendChild(p);
-        }
-    </script>
 </head>
 
 <body>
-    <h2>EPUB Quiz</h2>
-
-    <!-- EPUB  -->
     <div class="questions">
-        <p><b>Question 1: </b> Which of these are fruits?</p><input type="checkbox" name="question-option-0" id="question-0-0" value="Cabbage" class="checkbox-0"><label for="question-0-0">Cabbage</label><br><input type="checkbox" name="question-option-0"
-            id="question-0-1" value="Tomato" class="checkbox-0"><label for="question-0-1">Tomato</label><br><input type="checkbox" name="question-option-0" id="question-0-2" value="Apple" class="checkbox-0" data-checked="checked"><label for="question-0-2">Apple</label><br>
-        <input type="checkbox" name="question-option-0" id="question-0-3" value="Maize" class="checkbox-0"><label for="question-0-3">Maize</label><br>
-        <div class="answer"></div>
-        <p><b>Question 2: </b> CSS if for styling HTML?</p><input type="radio" name="question-option-1" id="question-1-0" value="True"><label for="question-1-0">True</label><br><input type="radio" name="question-option-1" id="question-1-1" value="False">
-        <label for="question-1-1">False</label><br>
-        <div class="answer"></div>
-        <p><b>Question 3: </b> Which of these are Vegetables?</p><input type="checkbox" name="question-option-2" id="question-2-0" value="Lemon" class="checkbox-2"><label for="question-2-0">Lemon</label><br><input type="checkbox" name="question-option-2"
-            id="question-2-1" value="Cucumber" class="checkbox-2" data-checked="checked"><label for="question-2-1">Cucumber</label><br><input type="checkbox" name="question-option-2" id="question-2-2" value="Mint" class="checkbox-2" data-checked="checked">
-        <label for="question-2-2">Mint</label><br><input type="checkbox" name="question-option-2" id="question-2-3" value="Maize" class="checkbox-2" data-checked="checked"><label for="question-2-3">Maize</label><br>
-        <div class="answer"></div>
-        <p><b>Question 4: </b> Which of these are valid colours?</p><input type="checkbox" name="question-option-3" id="question-3-0" value="Peach" class="checkbox-3" data-checked="checked"><label for="question-3-0">Peach</label><br><input type="checkbox"
-            name="question-option-3" id="question-3-1" value="Pale" class="checkbox-3"><label for="question-3-1">Pale</label><br><input type="checkbox" name="question-option-3" id="question-3-2" value="Blank" class="checkbox-3"><label for="question-3-2">Blank</label><br>
-        <input type="checkbox" name="question-option-3" id="question-3-3" value="Orange" class="checkbox-3" data-checked="checked"><label for="question-3-3">Orange</label><br>
-        <div class="answer"></div>
-        <p><b>Question 5: </b> an apple is a vegetable?</p><input type="radio" name="question-option-4" id="question-4-0" value="True"><label for="question-4-0">True</label><br><input type="radio" name="question-option-4" id="question-4-1" value="False">
-        <label for="question-4-1">False</label><br>
-        <div class="answer"></div>
-        <p><b>Question 6: </b> Which of these are valid html tags?</p><input type="checkbox" name="question-option-5" id="question-5-0" value="<a></a>" class="checkbox-5" data-checked="checked"><label for="question-5-0">&lt;a&gt;&lt;/a&gt;</label><br>
-        <input type="checkbox" name="question-option-5" id="question-5-1" value="<c></c>" class="checkbox-5"><label for="question-5-1">&lt;c&gt;&lt;/c&gt;</label><br><input type="checkbox" name="question-option-5" id="question-5-2" value="<d></d>" class="checkbox-5">
-        <label
-            for="question-5-2">&lt;d&gt;&lt;/d&gt;</label><br><input type="checkbox" name="question-option-5" id="question-5-3" value="<e></e>" class="checkbox-5"><label for="question-5-3">&lt;e&gt;&lt;/e&gt;</label><br>
-            <div class="answer"></div>
+        <div class="question single question-0">
+            <p><b>Question 1: </b> Which of these are fruits?</p><input type="checkbox" name="question-option-0" id="question-0-0" value="Cabbage" class="checkbox-0"><label for="question-0-0">Cabbage</label><br><input type="checkbox" name="question-option-0"
+                id="question-0-1" value="Tomato" class="checkbox-0"><label for="question-0-1">Tomato</label><br><input type="checkbox" name="question-option-0" id="question-0-2" value="Apple" class="checkbox-0" data-checked="checked"><label for="question-0-2">Apple</label><br>
+            <input
+                type="checkbox" name="question-option-0" id="question-0-3" value="Maize" class="checkbox-0"><label for="question-0-3">Maize</label><br>
+                <p class="explanation">Only Cabbage is is a vegetable</p><button class="primary-btn checkbox-0">Check answer</button><button class="secondary-btn checkbox-0">Clear answer</button></div>
+        <div class="question single question-1">
+            <p><b>Question 2: </b> CSS if for styling HTML?</p><input type="radio" name="question-option-1" id="question-1-0" value="True"><label for="question-1-0">True</label><br><input type="radio" name="question-option-1" id="question-1-1" value="False">
+            <label
+                for="question-1-1">False</label><br>
+                <p class="explanation">CSS is used for styling HTML</p><button class="primary-btn">Check answer</button><button class="secondary-btn">Clear answer</button></div>
+        <div class="question single question-2">
+            <p><b>Question 3: </b> Which of these are Vegetables?</p><input type="checkbox" name="question-option-2" id="question-2-0" value="Lemon" class="checkbox-2"><label for="question-2-0">Lemon</label><br><input type="checkbox" name="question-option-2"
+                id="question-2-1" value="Cucumber" class="checkbox-2" data-checked="checked"><label for="question-2-1">Cucumber</label><br><input type="checkbox" name="question-option-2" id="question-2-2" value="Mint" class="checkbox-2" data-checked="checked">
+            <label
+                for="question-2-2">Mint</label><br><input type="checkbox" name="question-option-2" id="question-2-3" value="Maize" class="checkbox-2" data-checked="checked"><label for="question-2-3">Maize</label><br>
+                <p class="explanation">Lemon is not a vegetable</p><button class="primary-btn checkbox-2">Check answer</button><button class="secondary-btn checkbox-2">Clear answer</button></div>
+        <div class="question single question-3">
+            <p><b>Question 4: </b> Which of these are valid colours?</p><input type="checkbox" name="question-option-3" id="question-3-0" value="Peach" class="checkbox-3" data-checked="checked"><label for="question-3-0">Peach</label><br><input type="checkbox"
+                name="question-option-3" id="question-3-1" value="Pale" class="checkbox-3"><label for="question-3-1">Pale</label><br><input type="checkbox" name="question-option-3" id="question-3-2" value="Blank" class="checkbox-3"><label for="question-3-2">Blank</label><br>
+            <input
+                type="checkbox" name="question-option-3" id="question-3-3" value="Orange" class="checkbox-3" data-checked="checked"><label for="question-3-3">Orange</label><br>
+                <p class="explanation">Peach and Orange are valid colours</p><button class="primary-btn checkbox-3">Check answer</button><button class="secondary-btn checkbox-3">Clear answer</button></div>
+        <div class="question single question-4">
+            <p><b>Question 5: </b> An apple is a vegetable?</p><input type="radio" name="question-option-4" id="question-4-0" value="True"><label for="question-4-0">True</label><br><input type="radio" name="question-option-4" id="question-4-1" value="False">
+            <label
+                for="question-4-1">False</label><br>
+                <p class="explanation">An apple is a fruit</p><button class="primary-btn">Check answer</button><button class="secondary-btn">Clear answer</button></div>
+        <div class="question single question-5">
+            <p><b>Question 6: </b> Which of these are valid html tags?</p><input type="checkbox" name="question-option-5" id="question-5-0" value="<a></a>" class="checkbox-5" data-checked="checked"><label for="question-5-0">&lt;a&gt;&lt;/a&gt;</label><br>
+            <input
+                type="checkbox" name="question-option-5" id="question-5-1" value="<c></c>" class="checkbox-5"><label for="question-5-1">&lt;c&gt;&lt;/c&gt;</label><br><input type="checkbox" name="question-option-5" id="question-5-2" value="<d></d>" class="checkbox-5"><label for="question-5-2">&lt;d&gt;&lt;/d&gt;</label><br><input type="checkbox" name="question-option-5"
+                    id="question-5-3" value="<e></e>" class="checkbox-5"><label for="question-5-3">&lt;e&gt;&lt;/e&gt;</label><br>
+                <p class="explanation">an anchor tag (&lt;a&gt;) is a valid html tag</p><button class="primary-btn checkbox-5">Check answer</button><button class="secondary-btn checkbox-5">Clear answer</button></div>
     </div>
-
-    <div class="status"></div>
-    <br>
-    <button class="btn" onclick="validateQuiz()">Validate Quiz</button>
 </body>
 
 </html>

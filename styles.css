@@ -30,16 +30,11 @@
  h2 {
      font-size: 16px !important;
      margin: 20px 0 !important;
-     font-weight: bold !important;
  }
  
  input[type="file"] {
      margin: 0 auto;
      padding-left: 120px;
- }
- 
- p {
-     margin-top: 20px !important;
  }
  
  .questions {
@@ -50,16 +45,6 @@
      height: fit-content;
      text-align: center;
      margin: 20px;
- }
- 
- .btn {
-     width: 160px;
-     padding: 10px;
-     background-color: #0e0d0d;
-     color: #fff;
-     font-size: 16px;
-     border: none;
-     border-radius: 4px;
  }
  
  textarea {
@@ -136,4 +121,56 @@
  
  .btn {
      font-weight: bold !important;
+ }
+ 
+ .warning {
+     color: orange;
+ }
+ 
+ .hide {
+     display: none;
+ }
+ 
+ .question.single {
+     border: 1px solid #008a98;
+     border-radius: 4px;
+     margin: 10px;
+     padding: 20px;
+ }
+ 
+ .question.multi {
+     border-bottom: 1px solid #008a98;
+     margin: 10px;
+     padding: 20px;
+ }
+ 
+ p.explanation {
+     color: #d5852a;
+     margin: 10px 0;
+ }
+ 
+ .primary-btn {
+     background-color: #008a98;
+     color: #F1F1F1;
+     padding: 6px;
+     width: 120px;
+     border: none;
+     border-radius: 4px;
+     margin-top: 6px;
+ }
+ 
+ .secondary-btn {
+     background-color: #b8424a;
+     color: #F1F1F1;
+     padding: 6px;
+     width: 120px;
+     border: none;
+     border-radius: 4px;
+     margin-left: 6px;
+     margin-top: 6px;
+ }
+ 
+ .primary-btn:hover,
+ .secondary-btn:hover {
+     opacity: 0.9;
  }
