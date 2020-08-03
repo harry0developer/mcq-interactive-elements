@@ -209,20 +209,27 @@ window.onload = function() {
                 var label = document.createElement('label');
                 label.setAttribute("for", `question-${index}-${i}`);
                 label.innerText = opt.trim();
-                var br = document.createElement("br");
+                // var br = document.createElement("br");
+
+                var optionDiv = document.createElement('div');
+                optionDiv.className = `question-container-${index}-${i}`;
+                optionDiv.appendChild(inputItem);
+                optionDiv.appendChild(label);
 
                 // questions.appendChild(inputItem);
                 // questions.appendChild(label);
                 // questions.appendChild(br);
 
-                qdiv.appendChild(inputItem);
-                qdiv.appendChild(label);
-                qdiv.appendChild(br);
+                // qdiv.appendChild(inputItem);
+                // qdiv.appendChild(label);
+                // qdiv.appendChild(br);
+
+                qdiv.appendChild(optionDiv);
             });
 
             var explanation = document.createElement("p");
-            explanation.className = "explanation";
-            explanation.innerText = obj.explanation
+            explanation.className = `explanation checkbox-${index}`;
+            explanation.innerText = obj.explanation;
             qdiv.appendChild(explanation);
 
             if (questionType.toLowerCase() === 'single') {

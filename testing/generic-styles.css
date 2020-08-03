@@ -1,16 +1,28 @@
+* {
+    font-family: 'Nunito', sans-serif;
+}
+
 p {
     font-size: 16px !important;
 }
 
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+
+.primary-btn-disabled {
+    background-color: #87b8bd !important;
+}
+
 .correct {
-    background-color: rgb(80, 159, 80);
     color: #fff;
     font-size: 18px;
     padding: 20px;
 }
 
 .incorrect {
-    background-color: rgb(160, 38, 38);
     color: #fff;
     font-size: 18px;
     padding: 20px;
@@ -18,14 +30,29 @@ p {
 
 .correct-ans {
     font-weight: bold;
-    color: #fff !important;
-    background-color: green;
+    color: #35bd10;
+    border-radius: 4px;
+    border: 2px solid #35bd10;
+    padding: 4px;
+    margin: 2px 0;
 }
 
 .incorrect-ans {
     font-weight: bold;
-    color: #fff !important;
-    background-color: red !important;
+    border: 2px solid #d9443d;
+    color: #d8443e;
+    border-radius: 4px;
+    padding: 4px;
+    margin: 2px 0;
+}
+
+.was-correct-ans {
+    font-weight: bold;
+    color: #fff;
+    background-color: #de817f;
+    border-radius: 4px;
+    padding: 4px;
+    margin: 2px 0;
 }
 
 .question.single {
@@ -51,9 +78,12 @@ p {
     margin-top: 6px;
 }
 
-.primary-btn:hover,
+.primary-btn:hover {
+    background-color: #06646f;
+}
+
 .secondary-btn:hover {
-    opacity: 0.8;
+    background-color: #8d2930;
 }
 
 .secondary-btn {
@@ -68,5 +98,26 @@ p {
 }
 
 p.explanation {
-    display: none;
+    color: #c4702c;
+    font-size: 14px;
+}
+
+.correct-explanation {
+    color: #fff !important;
+    background: #35bd10;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.incorrect-explanation {
+    color: #fff !important;
+    background: #b84249;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+img.status-icon {
+    width: 35px;
+    vertical-align: middle;
+    margin-right: 10px;
 }

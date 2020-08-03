@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="./generic-styles.css">
     <script src="./generic-scripts.js"></script>
     <title>Document</title>
@@ -11,41 +13,36 @@
 </head>
 
 <body>
+
     <div class="questions">
         <div class="question single question-0">
-            <p><b>Question 1: </b> Which of these are fruits?</p><input type="checkbox" name="question-option-0" id="question-0-0" value="Cabbage" class="checkbox-0"><label for="question-0-0">Cabbage</label><br><input type="checkbox" name="question-option-0"
-                id="question-0-1" value="Tomato" class="checkbox-0"><label for="question-0-1">Tomato</label><br><input type="checkbox" name="question-option-0" id="question-0-2" value="Apple" class="checkbox-0" data-checked="checked"><label for="question-0-2">Apple</label><br>
-            <input
-                type="checkbox" name="question-option-0" id="question-0-3" value="Maize" class="checkbox-0"><label for="question-0-3">Maize</label><br>
-                <p class="explanation">Only Cabbage is is a vegetable</p><button class="primary-btn checkbox-0">Check answer</button><button class="secondary-btn checkbox-0">Clear answer</button></div>
+            <p><b>Question 1: </b> Which of these are fruits?</p>
+            <div class="question-container-0-0"><input type="checkbox" name="question-option-0" id="question-0-0" value="Cabbage" class="checkbox-0"><label for="question-0-0">Cabbage</label></div>
+            <div class="question-container-0-1"><input type="checkbox" name="question-option-0" id="question-0-1" value="Tomato" class="checkbox-0"><label for="question-0-1">Tomato</label></div>
+            <div class="question-container-0-2"><input type="checkbox" name="question-option-0" id="question-0-2" value="Apple" class="checkbox-0" data-checked="checked"><label for="question-0-2">Apple</label></div>
+            <div class="question-container-0-3"><input type="checkbox" name="question-option-0" id="question-0-3" value="Maize" class="checkbox-0"><label for="question-0-3">Maize</label></div>
+            <p class="explanation checkbox-0">Only Cabbage is is a vegetable</p><button class="primary-btn checkbox-0">Check answer</button><button class="secondary-btn checkbox-0">Clear answer</button></div>
         <div class="question single question-1">
-            <p><b>Question 2: </b> CSS if for styling HTML?</p><input type="radio" name="question-option-1" id="question-1-0" value="True"><label for="question-1-0">True</label><br><input type="radio" name="question-option-1" id="question-1-1" value="False">
-            <label
-                for="question-1-1">False</label><br>
-                <p class="explanation">CSS is used for styling HTML</p><button class="primary-btn">Check answer</button><button class="secondary-btn">Clear answer</button></div>
+            <p><b>Question 2: </b> Which of these are Vegetables?</p>
+            <div class="question-container-1-0"><input type="checkbox" name="question-option-1" id="question-1-0" value="Lemon" class="checkbox-1"><label for="question-1-0">Lemon</label></div>
+            <div class="question-container-1-1"><input type="checkbox" name="question-option-1" id="question-1-1" value="Cucumber" class="checkbox-1" data-checked="checked"><label for="question-1-1">Cucumber</label></div>
+            <div class="question-container-1-2"><input type="checkbox" name="question-option-1" id="question-1-2" value="Mint" class="checkbox-1" data-checked="checked"><label for="question-1-2">Mint</label></div>
+            <div class="question-container-1-3"><input type="checkbox" name="question-option-1" id="question-1-3" value="Maize" class="checkbox-1" data-checked="checked"><label for="question-1-3">Maize</label></div>
+            <p class="explanation checkbox-1">Lemon is not a vegetable</p><button class="primary-btn checkbox-1">Check answer</button><button class="secondary-btn checkbox-1">Clear answer</button></div>
         <div class="question single question-2">
-            <p><b>Question 3: </b> Which of these are Vegetables?</p><input type="checkbox" name="question-option-2" id="question-2-0" value="Lemon" class="checkbox-2"><label for="question-2-0">Lemon</label><br><input type="checkbox" name="question-option-2"
-                id="question-2-1" value="Cucumber" class="checkbox-2" data-checked="checked"><label for="question-2-1">Cucumber</label><br><input type="checkbox" name="question-option-2" id="question-2-2" value="Mint" class="checkbox-2" data-checked="checked">
-            <label
-                for="question-2-2">Mint</label><br><input type="checkbox" name="question-option-2" id="question-2-3" value="Maize" class="checkbox-2" data-checked="checked"><label for="question-2-3">Maize</label><br>
-                <p class="explanation">Lemon is not a vegetable</p><button class="primary-btn checkbox-2">Check answer</button><button class="secondary-btn checkbox-2">Clear answer</button></div>
+            <p><b>Question 3: </b> Which of these are valid colours?</p>
+            <div class="question-container-2-0"><input type="checkbox" name="question-option-2" id="question-2-0" value="Peach" class="checkbox-2" data-checked="checked"><label for="question-2-0">Peach</label></div>
+            <div class="question-container-2-1"><input type="checkbox" name="question-option-2" id="question-2-1" value="Pale" class="checkbox-2"><label for="question-2-1">Pale</label></div>
+            <div class="question-container-2-2"><input type="checkbox" name="question-option-2" id="question-2-2" value="Blank" class="checkbox-2"><label for="question-2-2">Blank</label></div>
+            <div class="question-container-2-3"><input type="checkbox" name="question-option-2" id="question-2-3" value="Orange" class="checkbox-2" data-checked="checked"><label for="question-2-3">Orange</label></div>
+            <p class="explanation checkbox-2">Peach and Orange are valid colours</p><button class="primary-btn checkbox-2">Check answer</button><button class="secondary-btn checkbox-2">Clear answer</button></div>
         <div class="question single question-3">
-            <p><b>Question 4: </b> Which of these are valid colours?</p><input type="checkbox" name="question-option-3" id="question-3-0" value="Peach" class="checkbox-3" data-checked="checked"><label for="question-3-0">Peach</label><br><input type="checkbox"
-                name="question-option-3" id="question-3-1" value="Pale" class="checkbox-3"><label for="question-3-1">Pale</label><br><input type="checkbox" name="question-option-3" id="question-3-2" value="Blank" class="checkbox-3"><label for="question-3-2">Blank</label><br>
-            <input
-                type="checkbox" name="question-option-3" id="question-3-3" value="Orange" class="checkbox-3" data-checked="checked"><label for="question-3-3">Orange</label><br>
-                <p class="explanation">Peach and Orange are valid colours</p><button class="primary-btn checkbox-3">Check answer</button><button class="secondary-btn checkbox-3">Clear answer</button></div>
-        <div class="question single question-4">
-            <p><b>Question 5: </b> An apple is a vegetable?</p><input type="radio" name="question-option-4" id="question-4-0" value="True"><label for="question-4-0">True</label><br><input type="radio" name="question-option-4" id="question-4-1" value="False">
-            <label
-                for="question-4-1">False</label><br>
-                <p class="explanation">An apple is a fruit</p><button class="primary-btn">Check answer</button><button class="secondary-btn">Clear answer</button></div>
-        <div class="question single question-5">
-            <p><b>Question 6: </b> Which of these are valid html tags?</p><input type="checkbox" name="question-option-5" id="question-5-0" value="<a></a>" class="checkbox-5" data-checked="checked"><label for="question-5-0">&lt;a&gt;&lt;/a&gt;</label><br>
-            <input
-                type="checkbox" name="question-option-5" id="question-5-1" value="<c></c>" class="checkbox-5"><label for="question-5-1">&lt;c&gt;&lt;/c&gt;</label><br><input type="checkbox" name="question-option-5" id="question-5-2" value="<d></d>" class="checkbox-5"><label for="question-5-2">&lt;d&gt;&lt;/d&gt;</label><br><input type="checkbox" name="question-option-5"
-                    id="question-5-3" value="<e></e>" class="checkbox-5"><label for="question-5-3">&lt;e&gt;&lt;/e&gt;</label><br>
-                <p class="explanation">an anchor tag (&lt;a&gt;) is a valid html tag</p><button class="primary-btn checkbox-5">Check answer</button><button class="secondary-btn checkbox-5">Clear answer</button></div>
+            <p><b>Question 4: </b> Which of these are valid html tags?</p>
+            <div class="question-container-3-0"><input type="checkbox" name="question-option-3" id="question-3-0" value="<a></a>" class="checkbox-3" data-checked="checked"><label for="question-3-0">&lt;a&gt;&lt;/a&gt;</label></div>
+            <div class="question-container-3-1"><input type="checkbox" name="question-option-3" id="question-3-1" value="<c></c>" class="checkbox-3"><label for="question-3-1">&lt;c&gt;&lt;/c&gt;</label></div>
+            <div class="question-container-3-2"><input type="checkbox" name="question-option-3" id="question-3-2" value="<d></d>" class="checkbox-3"><label for="question-3-2">&lt;d&gt;&lt;/d&gt;</label></div>
+            <div class="question-container-3-3"><input type="checkbox" name="question-option-3" id="question-3-3" value="<e></e>" class="checkbox-3"><label for="question-3-3">&lt;e&gt;&lt;/e&gt;</label></div>
+            <p class="explanation checkbox-3">An anchor tag (&lt;a&gt;) is a valid html tag</p><button class="primary-btn checkbox-3">Check answer</button><button class="secondary-btn checkbox-3">Clear answer</button></div>
     </div>
 </body>
 
