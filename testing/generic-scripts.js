@@ -2,26 +2,25 @@ window.onload = function() {
 
     var explanation = document.querySelectorAll('.explanation');
 
-    console.log(explanation);
     explanation.forEach(exp => {
         exp.style.display = 'none';
     });
     groupCheckboxesQuestions();
-    addClickEventListener();
+    groupRadioQuestions();
+    addCheckboxClickEventListener();
+    addRadioClickEventListener();
 }
 
 
 var groupedCheckboxes = [];
 var checkedCheckboxes;
 
-var addClickEventListener = function() {
+var groupedRadios = [];
+var checkedRadio;
+
+var addCheckboxClickEventListener = function() {
     var primaryBtns = document.querySelectorAll('.primary-btn');
     var secondaryBtns = document.querySelectorAll('.secondary-btn');
-    // console.log(primaryBtns);
-    // console.log(secondaryBtns);
-
-    // console.log('groupedCheckboxes: ', groupedCheckboxes);
-    // console.log('checkedCheckboxes:', checkedCheckboxes);
 
     primaryBtns.forEach(pb => {
         groupedCheckboxes.forEach(gc => {
@@ -30,7 +29,7 @@ var addClickEventListener = function() {
             if (className && className.split(' ')[1] && className.split(' ')[1] === gc[0].getAttribute('class')) {
                 pb.addEventListener('click', function(e) {
                     e.preventDefault();
-                    validateSingleQuestionSet(e);
+                    validateSingleCheckboxQuestionSet(e);
                 })
             }
         });
@@ -42,13 +41,43 @@ var addClickEventListener = function() {
             if (className && className.split(' ')[1] && className.split(' ')[1] === gc[0].getAttribute('class')) {
                 sb.addEventListener('click', function(e) {
                     e.preventDefault();
-                    clearSingleQuestionSet(e);
+                    clearSingleQuestionSetCheckbox(e);
+                })
+            }
+        });
+    });
+}
+
+
+var addRadioClickEventListener = function() {
+    var primaryBtns = document.querySelectorAll('.primary-btn');
+    var secondaryBtns = document.querySelectorAll('.secondary-btn');
+
+
+    primaryBtns.forEach(pb => {
+        groupedRadios.forEach(gr => {
+            var className = pb.getAttribute('class');
+            if (className && className.split(' ')[1] && className.split(' ')[1] === gr[0].getAttribute('class')) {
+                // console.log(pb, gr[0]);
+                pb.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    validateSingleRadioQuestionSet(e);
                 })
             }
         });
     });
 
-
+    secondaryBtns.forEach(sb => {
+        groupedRadios.forEach(gr => {
+            var className = sb.getAttribute('class');
+            if (className && className.split(' ')[1] && className.split(' ')[1] === gr[0].getAttribute('class')) {
+                sb.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    clearSingleQuestionSetRadio(e);
+                })
+            }
+        });
+    });
 }
 
 var isCurrentlyChecked = function(checkedNodes, node) {
@@ -62,12 +91,11 @@ var isCurrentlyChecked = function(checkedNodes, node) {
     return status;
 }
 
-var clearSingleQuestionSet = function(e) {
+var clearSingleQuestionSetRadio = function(e) {
     var clickedButton = e.target.className;;
     var options = document.querySelectorAll(`input.${clickedButton.split(" ")[1]}`);
     var btnPrimary = document.querySelector(`.${clickedButton.split(" ")[1]}.primary-btn`);
     var explanation = document.querySelector(`.${clickedButton.split(" ")[1]}.explanation`);
-
 
     explanation.classList.remove('incorrect-explanation');
     explanation.classList.remove('correct-explanation');
@@ -76,10 +104,8 @@ var clearSingleQuestionSet = function(e) {
 
     explanation.style.display = 'none';
 
-
     btnPrimary.classList.remove('primary-btn-disabled');
     btnPrimary.disabled = false;
-
 
     options.forEach(opt => {
         opt.checked = false;
@@ -90,7 +116,32 @@ var clearSingleQuestionSet = function(e) {
 }
 
 
-var validateSingleQuestionSet = function(e) {
+var clearSingleQuestionSetCheckbox = function(e) {
+    var clickedButton = e.target.className;;
+    var options = document.querySelectorAll(`input.${clickedButton.split(" ")[1]}`);
+    var btnPrimary = document.querySelector(`.${clickedButton.split(" ")[1]}.primary-btn`);
+    var explanation = document.querySelector(`.${clickedButton.split(" ")[1]}.explanation`);
+
+    explanation.classList.remove('incorrect-explanation');
+    explanation.classList.remove('correct-explanation');
+    document.querySelector(`.explanation img`).remove();
+    document.querySelector(`.explanation b`).remove();
+
+    explanation.style.display = 'none';
+
+    btnPrimary.classList.remove('primary-btn-disabled');
+    btnPrimary.disabled = false;
+
+    options.forEach(opt => {
+        opt.checked = false;
+        opt.disabled = false;
+        opt.parentNode.classList.remove('incorrect-ans');
+        opt.parentNode.classList.remove('correct-ans');
+    });
+}
+
+
+var validateSingleCheckboxQuestionSet = function(e) {
     checkedCheckboxes = document.querySelectorAll('input[type=checkbox]:checked');
     var btnClasses = e.target.className;
     var explanation;
@@ -153,6 +204,59 @@ var validateSingleQuestionSet = function(e) {
 }
 
 
+var validateSingleRadioQuestionSet = function(e) {
+    checkedRadio = document.querySelector(`input[type=radio]:checked.${e.target.className.split(" ")[1]}`);
+    var allRadio = document.querySelectorAll(`input[type=radio].${e.target.className.split(" ")[1]}`);
+
+    var correctRadio;
+    allRadio.forEach(ar => {
+        if (ar) {
+            ar.disabled = true;
+            if (ar.getAttribute('data-checked')) {
+                correctRadio = ar;
+            }
+        }
+    });
+
+
+    e.target.disabled = true;
+    e.target.className += ' primary-btn-disabled';
+    var status = 'incorrect'
+
+
+    if (checkedRadio && checkedRadio.getAttribute("data-checked")) {
+        correctRadio.parentNode.className += " correct-ans";
+        status = 'correct';
+    } else {
+        checkedRadio.parentNode.className += " incorrect-ans";
+        correctRadio.parentNode.className += " correct-ans";
+    }
+
+    explanation = document.querySelector(`.explanation.${checkedRadio.getAttribute('class')}`);
+    explanation.style.display = 'block';
+
+    var img = document.createElement('img');
+    var b = document.createElement('b');
+    if (status === 'correct') {
+        b.innerHTML = 'Correct: ';
+        img.src = "./imgs/correct.png";
+        img.className = "status-icon";
+        explanation.className += ' correct-explanation';
+
+    } else {
+        b.innerHTML = 'Incorrect: ';
+        img.src = "./imgs/incorrect.png";
+        img.className = "status-icon";
+        explanation.className += ' incorrect-explanation';
+    }
+    explanation.prepend(b)
+    explanation.prepend(img);
+
+
+}
+
+
+
 var groupCheckboxesQuestions = function() {
     // 1. select all checked options
     checkedCheckboxes = document.querySelectorAll('input[type=checkbox]:checked');
@@ -164,18 +268,25 @@ var groupCheckboxesQuestions = function() {
             groupedCheckboxes.push(document.querySelectorAll(`.checkbox-${i}`));
         }
     }
+}
 
-    // checkedCheckboxes.forEach(c => {
-    //     if (c.getAttribute('data-checked') === "checked") {
-    //         var label = document.querySelector(`label[for=${c.getAttribute('id')}]`);
-    //         label.className += ' correct-ans';
-    //     } else {
-    //         var label = document.querySelector(`label[for=${c.getAttribute('id')}]`);
-    //         label.className += ' incorrect-ans';
-    //         status = 'incorrect'
 
+var groupRadioQuestions = function() {
+    // 1. select all checked options
+    // var allRadios = document.querySelectorAll('input[type=radio]');
+
+    // allRadios.forEach(c => {
+    //     if (c.getAttribute('data-checked') === 'checked') {
+    //         checkedRadios.push(c);
     //     }
-    // })
+    // });
+
+    // 2. group all options
+    for (var i = 0; i < 100; i++) {
+        if (document.querySelector(`input[type="radio"].radio-${i}`)) {
+            groupedRadios.push(document.querySelectorAll(`input[type="radio"].radio-${i}`));
+        }
+    }
 }
 
 
@@ -184,8 +295,6 @@ var validateMultipleQuestionSet = function() {
     // 1. select all checked options
     var checkedCheckboxes = document.querySelectorAll('input[type=checkbox]:checked');
     var groupedCheckboxes = [];
-
-    console.log(checkedCheckboxes);
 
 
     // 2. group all options

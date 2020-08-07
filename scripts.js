@@ -4,6 +4,7 @@ window.onload = function() {
     questionType = 'single';
     var input = document.getElementById('file');
 
+
     if (input) {
         input.addEventListener('change', function(a) {
             filename = a.target.value.split("\\")[2].split('.')[0] + '.html';
@@ -106,7 +107,7 @@ window.onload = function() {
             // questions.appendChild(questionPara);
             qdiv.appendChild(questionPara);
 
-            var options = obj.options.trim().split(",");
+            var options = obj.options.trim().split("|");
             var correctAnswer = getAnswerNumber(obj);
 
             options.forEach((opt, i) => {
@@ -115,36 +116,43 @@ window.onload = function() {
                 inputItem.name = `question-option-${index}`;
                 inputItem.id = `question-${index}-${i}`;
                 inputItem.value = opt.trim();
-                inputItem.checked = correctAnswer === i ? 'checked' : false;
+
+                if (correctAnswer === i) {
+                    inputItem.checked = 'checked';
+                    inputItem.setAttribute('data-checked', 'checked');
+                } else {
+                    inputItem.checked = false;
+                }
+                inputItem.className = `radio-${index}`;
+
 
                 var label = document.createElement('label');
                 label.setAttribute("for", `question-${index}-${i}`);
                 label.innerText = opt.trim();
 
-                var br = document.createElement("br");
-                // questions.appendChild(inputItem);
-                // questions.appendChild(label);
-                // questions.appendChild(br);
 
-                qdiv.appendChild(inputItem);
-                qdiv.appendChild(label);
-                qdiv.appendChild(br);
+                var optionDiv = document.createElement('div');
+                optionDiv.className = `question-container-${index}-${i}`;
+                optionDiv.appendChild(inputItem);
+                optionDiv.appendChild(label);
+                qdiv.appendChild(optionDiv);
 
             });
 
+
             var explanation = document.createElement("p");
-            explanation.className = "explanation";
-            explanation.innerText = obj.explanation
+            explanation.className = `explanation radio-${index}`;
+            explanation.innerText = obj.explanation;
             qdiv.appendChild(explanation);
 
             if (questionType.toLowerCase() === 'single') {
-                var primaryBtn = addButton('Check answer', 'primary-btn');
-                var secBtn = addButton('Clear answer', 'secondary-btn');
-
+                var primaryBtnClasses = 'primary-btn ' + `radio-${index}`;
+                var secBtnClasses = 'secondary-btn ' + `radio-${index}`;
+                var primaryBtn = addButton('Check answer', primaryBtnClasses);
+                var secBtn = addButton('Clear answer', secBtnClasses);
                 qdiv.appendChild(primaryBtn);
                 qdiv.appendChild(secBtn);
             }
-
 
             questions.appendChild(qdiv);
 
@@ -162,9 +170,8 @@ window.onload = function() {
             questionPara.innerHTML = `<b>Question ${index+1}: </b> ${obj.question}`;
 
             qdiv.appendChild(questionPara);
-            // questions.appendChild(questionPara);
 
-            var options = obj.options.split(",");
+            var options = obj.options.split("|");
             var answers = obj.answer.split(",");
 
             options.forEach((opt, i) => {
@@ -209,21 +216,11 @@ window.onload = function() {
                 var label = document.createElement('label');
                 label.setAttribute("for", `question-${index}-${i}`);
                 label.innerText = opt.trim();
-                // var br = document.createElement("br");
 
                 var optionDiv = document.createElement('div');
                 optionDiv.className = `question-container-${index}-${i}`;
                 optionDiv.appendChild(inputItem);
                 optionDiv.appendChild(label);
-
-                // questions.appendChild(inputItem);
-                // questions.appendChild(label);
-                // questions.appendChild(br);
-
-                // qdiv.appendChild(inputItem);
-                // qdiv.appendChild(label);
-                // qdiv.appendChild(br);
-
                 qdiv.appendChild(optionDiv);
             });
 

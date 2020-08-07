@@ -1,0 +1,24 @@
+Q: The MOV Extensions Refers to –
+O: Animation/movie file | Image file | Audio file | MS Office document
+A: A
+R: 
+T: SINGLE
+
+
+Q: The PDF Extensions Refers to –
+O: Animation/movie file | Password list | Adobe Acrobat file | Image file
+A: C
+R: Adobe Acrobat file
+T: SINGLE
+
+Q: The Extensions RTF Refers to –
+O: Rich Text Format | Image file | Compressed Archive file | Adobe FrameMaker document
+A: A
+R: Peach and Orange are valid colours
+T: SINGLE
+
+Q: The Extensions FNT Refers to –
+O: Image file | Audio file | Programming/scripting related file | Font file
+A: D
+R: Font file
+T: SINGLE
