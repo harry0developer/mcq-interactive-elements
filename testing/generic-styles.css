@@ -9,6 +9,14 @@ p {
 input[type="checkbox"] {
     width: 18px;
     height: 18px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
     vertical-align: middle;
 }
 

@@ -1,14 +1,17 @@
 window.onload = function() {
-
     var explanation = document.querySelectorAll('.explanation');
-
     explanation.forEach(exp => {
         exp.style.display = 'none';
     });
+
+    //single questions
     groupCheckboxesQuestions();
     groupRadioQuestions();
     addCheckboxClickEventListener();
     addRadioClickEventListener();
+
+    //multi questions
+    addEventListernerForMultiSetQuestion();
 }
 
 
@@ -80,9 +83,32 @@ var addRadioClickEventListener = function() {
     });
 }
 
+
+var addEventListernerForMultiSetQuestion = function() {
+    var primaryBtn = document.querySelector('.primary-btn');
+    var secondaryBtns = document.querySelector('.secondary-btn');
+
+    primaryBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        validateMultipleQuestionSet();
+    });
+    secondaryBtns.addEventListener('click', function(e) {
+        e.preventDefault();
+        var allInputs = document.querySelectorAll('input');
+        primaryBtn.disabled = false;
+        primaryBtn.classList.remove('primary-btn-disabled');
+        allInputs.forEach(input => {
+            input.disabled = false;
+            input.checked = false;
+            input.parentNode.classList.remove('incorrect-ans');
+            input.parentNode.classList.remove('correct-ans');
+        })
+    })
+}
+
+
 var isCurrentlyChecked = function(checkedNodes, node) {
     var status = false;
-    console.log(checkedNodes);
     checkedNodes.forEach(c => {
         if (c.isSameNode(node)) {
             status = true;
@@ -99,8 +125,12 @@ var clearSingleQuestionSetRadio = function(e) {
 
     explanation.classList.remove('incorrect-explanation');
     explanation.classList.remove('correct-explanation');
-    document.querySelector(`.explanation img`).remove();
-    document.querySelector(`.explanation b`).remove();
+    if (document.querySelector(`.explanation img`)) {
+        document.querySelector(`.explanation img`).remove();
+    }
+    if (document.querySelector(`.explanation b`)) {
+        document.querySelector(`.explanation b`).remove();
+    }
 
     explanation.style.display = 'none';
 
@@ -143,64 +173,72 @@ var clearSingleQuestionSetCheckbox = function(e) {
 
 var validateSingleCheckboxQuestionSet = function(e) {
     checkedCheckboxes = document.querySelectorAll('input[type=checkbox]:checked');
-    var btnClasses = e.target.className;
-    var explanation;
-    checkboxToValidate = [];
-    status = 'correct';
-    checkedCheckboxes.forEach(cc => {
-        if (cc.getAttribute('class') === btnClasses.split(" ")[1].trim()) {
-            checkboxToValidate.push(cc);
-        }
-    });
+    allCheckboxes = document.querySelectorAll('input[type=checkbox]');
 
-    checkboxToValidate.forEach(c => {
-        var btn = document.querySelector(`button.${c.getAttribute('class')}`);
-        btn.disabled = true;
-        btn.className += ' primary-btn-disabled';
 
-        var count = 0;
+    if (checkedCheckboxes.length > 0) {
 
-        explanation = document.querySelector(`.explanation.${c.getAttribute('class')}`);
-        explanation.style.display = 'block';
-
-        var allCheckboxIThisGroup = document.querySelectorAll(`input.${c.getAttribute('class')}`);
-        allCheckboxIThisGroup.forEach(ac => {
-            ac.disabled = true;
-            if (ac.getAttribute('data-checked') === "checked") {
-                ac.parentNode.className += ' correct-ans';
-                count++;
+        var btnClasses = e.target.className;
+        var explanation;
+        checkboxToValidate = [];
+        status = 'correct';
+        checkedCheckboxes.forEach(cc => {
+            cc.disabled = true;
+            if (cc.getAttribute('class') === btnClasses.split(" ")[1].trim()) {
+                checkboxToValidate.push(cc);
             }
         });
 
+        checkboxToValidate.forEach(c => {
+            var btn = document.querySelector(`button.${c.getAttribute('class')}`);
+            btn.disabled = true;
+            c.disabled = true;
+            btn.className += ' primary-btn-disabled';
 
-        if (checkboxToValidate.length !== count) {
-            status = 'incorrect';
-        }
-        if (c.getAttribute('data-checked') === "checked") {
-            c.parentNode.className += ' correct-ans';
+            var count = 0;
+
+            explanation = document.querySelector(`.explanation.${c.getAttribute('class')}`);
+            explanation.style.display = 'block';
+
+            var allCheckboxIThisGroup = document.querySelectorAll(`input.${c.getAttribute('class')}`);
+            allCheckboxIThisGroup.forEach(ac => {
+                ac.disabled = true;
+                if (ac.getAttribute('data-checked') === "checked") {
+                    ac.parentNode.className += ' correct-ans';
+                    count++;
+                }
+            });
+
+
+            if (checkboxToValidate.length !== count) {
+                status = 'incorrect';
+            }
+            if (c.getAttribute('data-checked') === "checked") {
+                c.parentNode.className += ' correct-ans';
+            } else {
+                c.parentNode.className += ' incorrect-ans';
+                status = 'incorrect';
+            }
+        });
+
+        var img = document.createElement('img');
+        var b = document.createElement('b');
+        if (status === 'correct') {
+            b.innerHTML = 'Correct: ';
+            img.src = "./imgs/correct.png";
+            img.className = "status-icon";
+
+            explanation.className += ' correct-explanation';
+
         } else {
-            c.parentNode.className += ' incorrect-ans';
-            status = 'incorrect';
+            b.innerHTML = 'Incorrect: ';
+            img.src = "./imgs/incorrect.png";
+            img.className = "status-icon";
+            explanation.className += ' incorrect-explanation';
         }
-    });
-
-    var img = document.createElement('img');
-    var b = document.createElement('b');
-    if (status === 'correct') {
-        b.innerHTML = 'Correct: ';
-        img.src = "./imgs/correct.png";
-        img.className = "status-icon";
-
-        explanation.className += ' correct-explanation';
-
-    } else {
-        b.innerHTML = 'Incorrect: ';
-        img.src = "./imgs/incorrect.png";
-        img.className = "status-icon";
-        explanation.className += ' incorrect-explanation';
+        explanation.prepend(b)
+        explanation.prepend(img);
     }
-    explanation.prepend(b)
-    explanation.prepend(img);
 }
 
 
@@ -208,51 +246,55 @@ var validateSingleRadioQuestionSet = function(e) {
     checkedRadio = document.querySelector(`input[type=radio]:checked.${e.target.className.split(" ")[1]}`);
     var allRadio = document.querySelectorAll(`input[type=radio].${e.target.className.split(" ")[1]}`);
 
-    var correctRadio;
-    allRadio.forEach(ar => {
-        if (ar) {
-            ar.disabled = true;
-            if (ar.getAttribute('data-checked')) {
-                correctRadio = ar;
+    if (checkedRadio != null) {
+
+
+        var correctRadio;
+        allRadio.forEach(ar => {
+            if (ar) {
+                ar.disabled = true;
+                if (ar.getAttribute('data-checked')) {
+                    correctRadio = ar;
+                }
             }
+        });
+
+
+        e.target.disabled = true;
+        e.target.className += ' primary-btn-disabled';
+        var status = 'incorrect'
+
+
+        if (checkedRadio && checkedRadio.getAttribute("data-checked")) {
+            correctRadio.parentNode.className += " correct-ans";
+            status = 'correct';
+        } else {
+            checkedRadio.parentNode.className += " incorrect-ans";
+            correctRadio.parentNode.className += " correct-ans";
         }
-    });
 
+        explanation = document.querySelector(`.explanation.${checkedRadio.getAttribute('class')}`);
+        console.log(explanation);
+        explanation.style.display = 'block';
 
-    e.target.disabled = true;
-    e.target.className += ' primary-btn-disabled';
-    var status = 'incorrect'
+        var img = document.createElement('img');
+        var b = document.createElement('b');
+        if (status === 'correct') {
+            b.innerHTML = 'Correct: ';
+            img.src = "./imgs/correct.png";
+            img.className = "status-icon";
+            explanation.className += ' correct-explanation';
 
+        } else {
+            b.innerHTML = 'Incorrect: ';
+            img.src = "./imgs/incorrect.png";
+            img.className = "status-icon";
+            explanation.className += ' incorrect-explanation';
+        }
+        explanation.prepend(b)
+        explanation.prepend(img);
 
-    if (checkedRadio && checkedRadio.getAttribute("data-checked")) {
-        correctRadio.parentNode.className += " correct-ans";
-        status = 'correct';
-    } else {
-        checkedRadio.parentNode.className += " incorrect-ans";
-        correctRadio.parentNode.className += " correct-ans";
     }
-
-    explanation = document.querySelector(`.explanation.${checkedRadio.getAttribute('class')}`);
-    explanation.style.display = 'block';
-
-    var img = document.createElement('img');
-    var b = document.createElement('b');
-    if (status === 'correct') {
-        b.innerHTML = 'Correct: ';
-        img.src = "./imgs/correct.png";
-        img.className = "status-icon";
-        explanation.className += ' correct-explanation';
-
-    } else {
-        b.innerHTML = 'Incorrect: ';
-        img.src = "./imgs/incorrect.png";
-        img.className = "status-icon";
-        explanation.className += ' incorrect-explanation';
-    }
-    explanation.prepend(b)
-    explanation.prepend(img);
-
-
 }
 
 
@@ -272,15 +314,6 @@ var groupCheckboxesQuestions = function() {
 
 
 var groupRadioQuestions = function() {
-    // 1. select all checked options
-    // var allRadios = document.querySelectorAll('input[type=radio]');
-
-    // allRadios.forEach(c => {
-    //     if (c.getAttribute('data-checked') === 'checked') {
-    //         checkedRadios.push(c);
-    //     }
-    // });
-
     // 2. group all options
     for (var i = 0; i < 100; i++) {
         if (document.querySelector(`input[type="radio"].radio-${i}`)) {
@@ -291,18 +324,30 @@ var groupRadioQuestions = function() {
 
 
 var validateMultipleQuestionSet = function() {
+    var countCorrect = 0;
 
     // 1. select all checked options
     var checkedCheckboxes = document.querySelectorAll('input[type=checkbox]:checked');
     var groupedCheckboxes = [];
 
+    var allRadioButtons = document.querySelectorAll('input[type=radio]');
+    var checkedRadioButtons = document.querySelectorAll('input[type=radio]:checked');
+    var groupedRadioButtons = [];
 
-    // 2. group all options
+    // 2. group all Checkbox options
     for (var i = 0; i < 100; i++) {
         if (document.querySelector(`.checkbox-${i}`)) {
             groupedCheckboxes.push(document.querySelectorAll(`.checkbox-${i}`));
         }
     }
+
+    // 2. group all Radio options
+    for (var i = 0; i < allRadioButtons.length; i++) {
+        if (document.querySelector(`input.radio-${i}`)) {
+            groupedRadioButtons.push(document.querySelectorAll(`input.radio-${i}`));
+        }
+    }
+
 
     var checkedNodes = [];
     var status = 'correct';
@@ -310,47 +355,88 @@ var validateMultipleQuestionSet = function() {
 
     checkedCheckboxes.forEach(c => {
         if (c.getAttribute('data-checked') === "checked") {
-            // console.log(c, 'correct');
             var label = document.querySelector(`label[for=${c.getAttribute('id')}]`);
-            label.className += ' correct-ans';
+            label.parentNode.className += ' correct-ans';
+
         } else {
             // console.log(c, 'incorrect');
             var label = document.querySelector(`label[for=${c.getAttribute('id')}]`);
-            label.className += ' incorrect-ans';
+            label.parentNode.className += ' incorrect-ans';
             status = 'incorrect'
 
         }
+    });
+
+
+
+    checkedRadioButtons.forEach(cr => {
+        if (cr.getAttribute('data-checked') === "checked") {
+            cr.parentNode.className += " correct-ans";
+            countCorrect++;
+        } else {
+            cr.parentNode.className += " incorrect-ans";
+            var radioClass = cr.getAttribute('class');
+            var corr = document.querySelector(`.${radioClass}`)
+            corr.parentNode.className += " correct-ans";
+        }
+    });
+
+    groupedRadioButtons.forEach(rg => {
+        rg.forEach(r => {
+            r.disabled = true;
+        })
     })
 
     // 3. vaidate grouped options [ [op1,op2,op3,op4], [op1,op2,op3,op4], ...]
     groupedCheckboxes.forEach(groupChecked => {
         groupChecked.forEach(c => {
             if (c.getAttribute('data-checked') === "checked") {
-                var isChecked = isCurrentlyChecked(checkedCheckboxes, c);
-                console.log(isChecked);
-
-                if (isChecked) {
+                c.disabled = true;
+                if (isCurrentlyChecked(checkedCheckboxes, c)) {
 
                 } else {
-                    console.log(c);
-
+                    c.parentNode.className += " incorrect-ans";
                     status = 'incorrect';
-
                 }
             }
         });
     });
 
+    // console.log(groupedCheckboxes);
 
-    console.log("STATUS: ", status);
+    groupedCheckboxes.forEach(gc => {
+        gc.forEach(c => {
+            console.log(c.getAttribute('input'))
+        });
+    })
 
-    // var statusDiv = document.querySelector('.status');
-    // var p = document.createElement('p');
-    // p.className = status === 'correct' ? 'correct' : 'incorrect';
-    // p.innerText = status;
-    // if (statusDiv && statusDiv.hasChildNodes()) {
-    //     console.log(statusDiv.childNodes);
-    //     statusDiv.removeChild(statusDiv.childNodes[0])
-    // }
-    // statusDiv.appendChild(p);
+    // var explanations = document.querySelectorAll('.explanation');
+
+    // explanations.forEach(exp => {
+
+    //     exp.style.display = 'block';
+
+    //     var img = document.createElement('img');
+    //     var b = document.createElement('b');
+    //     if (status === 'correct') {
+    //         b.innerHTML = 'Correct: ';
+    //         img.src = "./imgs/correct.png";
+    //         img.className = "status-icon";
+    //         exp.className += ' correct-explanation';
+
+    //     } else {
+    //         b.innerHTML = 'Incorrect: ';
+    //         img.src = "./imgs/incorrect.png";
+    //         img.className = "status-icon";
+    //         exp.className += ' incorrect-explanation';
+    //     }
+    //     exp.prepend(b)
+    //     exp.prepend(img);
+    // });
+    var btn = document.querySelector('.primary-btn');
+    btn.disabled = true;
+    btn.className += ' primary-btn-disabled';
+
+    console.log("STATUS: ", status, " Correct: ", countCorrect);
+
 }

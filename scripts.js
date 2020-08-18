@@ -4,7 +4,6 @@ window.onload = function() {
     questionType = 'single';
     var input = document.getElementById('file');
 
-
     if (input) {
         input.addEventListener('change', function(a) {
             filename = a.target.value.split("\\")[2].split('.')[0] + '.html';
@@ -90,7 +89,6 @@ window.onload = function() {
 
     var generateInputTypeQuestion = function(type, index, obj) {
         var questions = document.querySelector(".questions");
-        console.log(obj);
         if (type == "radio") {
             var qdiv = document.createElement("div");
             if (questionType.toLowerCase() === 'single') {
