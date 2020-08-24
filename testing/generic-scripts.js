@@ -85,8 +85,8 @@ var addRadioClickEventListener = function() {
 
 
 var addEventListernerForMultiSetQuestion = function() {
-    var primaryBtn = document.querySelector('.primary-btn');
-    var secondaryBtns = document.querySelector('.secondary-btn');
+    var primaryBtn = document.querySelector('.multi-primary-btn');
+    var secondaryBtns = document.querySelector('.multi-secondary-btn');
 
     primaryBtn.addEventListener('click', function(e) {
         e.preventDefault();
@@ -433,7 +433,7 @@ var validateMultipleQuestionSet = function() {
     //     exp.prepend(b)
     //     exp.prepend(img);
     // });
-    var btn = document.querySelector('.primary-btn');
+    var btn = document.querySelector('.multi-primary-btn');
     btn.disabled = true;
     btn.className += ' primary-btn-disabled';
 

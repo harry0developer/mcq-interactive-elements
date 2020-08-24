@@ -69,8 +69,8 @@ window.onload = function() {
 
         if (questionType.toLowerCase() === 'multi') {
             var q = document.querySelector('.questions');
-            var primaryBtn = addButton('Check answer', 'primary-btn');
-            var secBtn = addButton('Clear answer', 'secondary-btn');
+            var primaryBtn = addButton('Check answer', 'multi-primary-btn');
+            var secBtn = addButton('Clear answer', 'multi-secondary-btn');
             // qdiv.appendChild(primaryBtn);
             // qdiv.appendChild(secBtn);
             q.appendChild(primaryBtn);

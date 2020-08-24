@@ -149,7 +149,8 @@
      margin: 10px 0;
  }
  
- .primary-btn {
+ .primary-btn,
+ .multi-primary-btn {
      background-color: #008a98;
      color: #F1F1F1;
      padding: 6px;
@@ -159,7 +160,8 @@
      margin-top: 6px;
  }
  
- .secondary-btn {
+ .secondary-btn,
+ .multi-secondary-btn {
      background-color: #b8424a;
      color: #F1F1F1;
      padding: 6px;
@@ -171,6 +173,8 @@
  }
  
  .primary-btn:hover,
- .secondary-btn:hover {
+ .secondary-btn:hover,
+ .multi-primary-btn:hover,
+ .multi-secondary-btn:hover {
      opacity: 0.9;
  }

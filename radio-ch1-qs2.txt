@@ -1,7 +1,7 @@
 Q: The MOV Extensions Refers to –
 O: Animation/movie file | Image file | Audio file | MS Office document
 A: A
-R: 
+R: MOV is a movie or video file Extension
 T: SINGLE
 
 
