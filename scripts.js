@@ -4,6 +4,11 @@ window.onload = function() {
     questionType = 'single';
     var input = document.getElementById('file');
 
+
+    // $(".questions").appendChild($(`<input type="checkbox" name="check" id="check" />`));
+
+
+
     if (input) {
         input.addEventListener('change', function(a) {
             filename = a.target.value.split("\\")[2].split('.')[0] + '.html';
@@ -86,6 +91,10 @@ window.onload = function() {
 
     }
 
+    createInputTag = function(type, name, id, value, className) {
+        var domparser = new DOMParser();
+        return domparser.parseFromString(`<input type="${type}" name="${name}" id="${id}" value="${value}" class="${className}" />`, 'text/xml').firstChild;
+    }
 
     var generateInputTypeQuestion = function(type, index, obj) {
         var questions = document.querySelector(".questions");
@@ -109,11 +118,25 @@ window.onload = function() {
             var correctAnswer = getAnswerNumber(obj);
 
             options.forEach((opt, i) => {
-                var inputItem = document.createElement('input');
-                inputItem.type = type;
-                inputItem.name = `question-option-${index}`;
-                inputItem.id = `question-${index}-${i}`;
-                inputItem.value = opt.trim();
+
+                // var inputItem = document.createElement('input');
+                // inputItem.type = type;
+                // inputItem.name = `question-option-${index}`;
+                // inputItem.id = `question-${index}-${i}`;
+                // inputItem.value = opt.trim();
+
+                // var type = type;
+
+                var name = `question-option-${index}`;
+                var id = `question-${index}-${i}`;
+                var value = opt.trim();
+
+                //let doc = domparser.parseFromString(`<input type="${type}" name="${name}" id="${id}" value="${value}" />`, 'text/xml');
+                // var inputTag = doc.firstChild;
+                var inputTag = createInputTag(type, name, id, value, "");
+
+                // console.log(inputTag);
+                var inputItem = inputTag;
 
                 if (correctAnswer === i) {
                     inputItem.checked = 'checked';
@@ -173,41 +196,50 @@ window.onload = function() {
             var answers = obj.answer.split(",");
 
             options.forEach((opt, i) => {
-                var inputItem = document.createElement('input');
-                inputItem.type = type;
-                inputItem.name = `question-option-${index}`;
-                inputItem.id = `question-${index}-${i}`;
-                inputItem.value = opt.trim();
-                inputItem.checked = false;
-                inputItem.className = `checkbox-${index}`;
+                // var inputItem = document.createElement('input');
+                // inputItem.type = type;
+                // inputItem.name = `question-option-${index}`;
+                // inputItem.id = `question-${index}-${i}`;
+                // inputItem.value = opt.trim();
+                // inputItem.checked = false;
+                // inputItem.className = `checkbox-${index}`;
+
+
+                var name = `question-option-${index}`;
+                var id = `question-${index}-${i}`;
+                var value = opt.trim();
+                var checked = false;
+                var className = `checkbox-${index}`;
+
+                var inputItem = createInputTag(type, name, id, value, className);
 
                 answers.forEach(a => {
                     if (a.toLowerCase() === 'a' && i === 0) {
-                        inputItem.checked = 'checked';
+                        // inputItem.checked = 'checked';
                         inputItem.setAttribute('data-checked', 'checked');
                     }
                     if (a.toLowerCase() === 'b' && i === 1) {
-                        inputItem.checked = 'checked';
+                        // inputItem.checked = 'checked';
                         inputItem.setAttribute('data-checked', 'checked');
                     }
                     if (a.toLowerCase() === 'c' && i === 2) {
-                        inputItem.checked = 'checked';
+                        // inputItem.checked = 'checked';
                         inputItem.setAttribute('data-checked', 'checked');
                     }
                     if (a.toLowerCase() === 'd' && i === 3) {
-                        inputItem.checked = 'checked';
+                        // inputItem.checked = 'checked';
                         inputItem.setAttribute('data-checked', 'checked');
                     }
                     if (a.toLowerCase() === 'e' && i === 4) {
-                        inputItem.checked = 'checked';
+                        // inputItem.checked = 'checked';
                         inputItem.setAttribute('data-checked', 'checked');
                     }
                     if (a.toLowerCase() === 'f' && i === 5) {
-                        inputItem.checked = 'checked';
+                        // inputItem.checked = 'checked';
                         inputItem.setAttribute('data-checked', 'checked');
                     }
                     if (a.toLowerCase() === 'g' && i === 6) {
-                        inputItem.checked = 'checked';
+                        // inputItem.checked = 'checked';
                         inputItem.setAttribute('data-checked', 'checked');
                     }
                 });

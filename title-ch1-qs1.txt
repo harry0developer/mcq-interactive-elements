@@ -18,7 +18,7 @@ R: Peach and Orange are valid colours
 T: MULTI
 
 Q: Which of these are valid html tags?
-O: <a></a> | <c></c> | <d></d> | <e></e>
+O: a| c| d| e
 A: A
 R: An anchor tag (<a>) is a valid html tag
 T: MULTI

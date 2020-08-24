@@ -154,8 +154,15 @@ var clearSingleQuestionSetCheckbox = function(e) {
 
     explanation.classList.remove('incorrect-explanation');
     explanation.classList.remove('correct-explanation');
-    document.querySelector(`.explanation img`).remove();
-    document.querySelector(`.explanation b`).remove();
+    var img = document.querySelectorAll(`.explanation img`);
+    var b = document.querySelectorAll(`.explanation b`);
+
+    img.forEach(i => {
+        i.remove();
+    });
+    b.forEach(bb => {
+        bb.remove();
+    })
 
     explanation.style.display = 'none';
 
@@ -406,7 +413,7 @@ var validateMultipleQuestionSet = function() {
 
     groupedCheckboxes.forEach(gc => {
         gc.forEach(c => {
-            console.log(c.getAttribute('input'))
+            // console.log(c.getAttribute('input'))
         });
     })
 
