@@ -1,10 +1,21 @@
+Q: Fill in the blank. [] is a juta platforms for legal research
+O: Phamapedia | Evolve | eJuta | POPIA
+A: C
+R: eJuta is platform for students
+T: SELECT
+
 Q: Which of these are fruits?
 O: Cabbage | Tomato | Apple | Maize
 A: C
 R: Only Cabbage is a vegetable
 T: MULTI
 
-
+Q: Students can use [] for accessing electronic study content
+O: Phamapedia | Evolve | eJuta | POPIA
+A: C
+R: eJuta is platform for students
+T: SELECT
+ 
 Q: Which of these are Vegetables?
 O: Lemon | Cucumber | Mint | Maize
 A: B,C,D
@@ -17,8 +28,8 @@ A: A,D
 R: Peach and Orange are valid colours
 T: MULTI
 
-Q: Which of these are valid html tags?
-O: a| c| d| e
+Q: Which of these is a valid html tag for links?
+O: a | c | d | e
 A: A
 R: An anchor tag (<a>) is a valid html tag
-T: MULTI
+T: SINGLE

@@ -7,8 +7,11 @@ window.onload = function() {
     //single questions
     groupCheckboxesQuestions();
     groupRadioQuestions();
+    groupSelectQuestions();
+
     addCheckboxClickEventListener();
     addRadioClickEventListener();
+    addSelectClickEventListener();
 
     //multi questions
     addEventListernerForMultiSetQuestion();
@@ -21,13 +24,15 @@ var checkedCheckboxes;
 var groupedRadios = [];
 var checkedRadio;
 
+var groupedSelectOptions = [];
+var checkedSelect;
+
 var addCheckboxClickEventListener = function() {
     var primaryBtns = document.querySelectorAll('.primary-btn');
     var secondaryBtns = document.querySelectorAll('.secondary-btn');
 
     primaryBtns.forEach(pb => {
         groupedCheckboxes.forEach(gc => {
-            // console.log(pb.getAttribute('class').split(' ')[1], gc[0].getAttribute('class'));
             var className = pb.getAttribute('class');
             if (className && className.split(' ')[1] && className.split(' ')[1] === gc[0].getAttribute('class')) {
                 pb.addEventListener('click', function(e) {
@@ -52,6 +57,103 @@ var addCheckboxClickEventListener = function() {
 }
 
 
+
+var addSelectClickEventListener = function() {
+    var primaryBtns = document.querySelectorAll('.primary-btn');
+    var secondaryBtns = document.querySelectorAll('.secondary-btn');
+
+    primaryBtns.forEach(pb => {
+        groupedSelectOptions.forEach(gc => {
+            var className = pb.getAttribute('class');
+            if (className && className.split(' ')[1] && className.split(' ')[1] === gc[0].getAttribute('class')) {
+                pb.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    validateSingleSelectQuestionSet(e);
+                })
+            }
+        });
+    });
+
+    secondaryBtns.forEach(sb => {
+        groupedSelectOptions.forEach(gc => {
+            var className = sb.getAttribute('class');
+            if (className && className.split(' ')[1] && className.split(' ')[1] === gc[0].getAttribute('class')) {
+                sb.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    clearSingleSelectQuestionSet(e);
+                })
+            }
+        });
+    });
+}
+
+var validateSingleSelectQuestionSet = function(e) {
+    var clickedButton = e.target.className;;
+    var btnPrimary = document.querySelector(`.${clickedButton.split(" ")[1]}.primary-btn`);
+
+    var parentClass = e.target.className.split(" ")[1];
+    var select = document.querySelector(`.${parentClass}`);
+    select.setAttribute("disabled", true);
+    var i = select.options.selectedIndex;
+    var selectedOption = select.options[i];
+    var att = selectedOption.getAttribute("data-checked");
+
+    var img = document.createElement('img');
+    var b = document.createElement('b');
+
+    var explanation = document.querySelector(`.${clickedButton.split(" ")[1]}.explanation`);
+    explanation.style.display = 'block';
+    btnPrimary.disabled = true;
+    btnPrimary.className += ' primary-btn-disabled';
+
+    if (att == "checked") {
+        b.innerHTML = 'Correct. ';
+        img.src = "./imgs/correct.png";
+        img.className = "status-icon";
+        explanation.className += ' correct-explanation';
+
+    } else {
+        //incorrect
+        b.innerHTML = 'Incorrect. ';
+        img.src = "./imgs/incorrect.png";
+        img.className = "status-icon";
+        explanation.className += ' incorrect-explanation';
+    }
+
+    explanation.prepend(b)
+    explanation.prepend(img);
+
+}
+
+var clearSingleSelectQuestionSet = function(e) {
+    var clickedButton = e.target.className;
+    var btnPrimary = document.querySelector(`.${clickedButton.split(" ")[1]}.primary-btn`);
+    var explanation = document.querySelector(`.${clickedButton.split(" ")[1]}.explanation`);
+    var img = document.querySelector(`.${clickedButton.split(" ")[1]}.explanation img`);
+    var b = document.querySelector(`.${clickedButton.split(" ")[1]}.explanation b`);
+
+    var select = document.querySelector(`.${clickedButton.split(" ")[1]}`);
+    select.removeAttribute("disabled")
+
+    console.log(select);
+
+
+    if (explanation) {
+        explanation.classList.remove('incorrect-explanation');
+        explanation.classList.remove('correct-explanation');
+    }
+    if (img) {
+        img.remove();
+    }
+    if (b) {
+        b.remove();
+    }
+    explanation.style.display = 'none';
+    btnPrimary.classList.remove('primary-btn-disabled');
+    btnPrimary.disabled = false;
+}
+
+
 var addRadioClickEventListener = function() {
     var primaryBtns = document.querySelectorAll('.primary-btn');
     var secondaryBtns = document.querySelectorAll('.secondary-btn');
@@ -61,7 +163,6 @@ var addRadioClickEventListener = function() {
         groupedRadios.forEach(gr => {
             var className = pb.getAttribute('class');
             if (className && className.split(' ')[1] && className.split(' ')[1] === gr[0].getAttribute('class')) {
-                // console.log(pb, gr[0]);
                 pb.addEventListener('click', function(e) {
                     e.preventDefault();
                     validateSingleRadioQuestionSet(e);
@@ -88,22 +189,27 @@ var addEventListernerForMultiSetQuestion = function() {
     var primaryBtn = document.querySelector('.multi-primary-btn');
     var secondaryBtns = document.querySelector('.multi-secondary-btn');
 
-    primaryBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        validateMultipleQuestionSet();
-    });
-    secondaryBtns.addEventListener('click', function(e) {
-        e.preventDefault();
-        var allInputs = document.querySelectorAll('input');
-        primaryBtn.disabled = false;
-        primaryBtn.classList.remove('primary-btn-disabled');
-        allInputs.forEach(input => {
-            input.disabled = false;
-            input.checked = false;
-            input.parentNode.classList.remove('incorrect-ans');
-            input.parentNode.classList.remove('correct-ans');
+    if (primaryBtn) {
+        primaryBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            validateMultipleQuestionSet();
+        });
+    }
+
+    if (secondaryBtns) {
+        secondaryBtns.addEventListener('click', function(e) {
+            e.preventDefault();
+            var allInputs = document.querySelectorAll('input');
+            primaryBtn.disabled = false;
+            primaryBtn.classList.remove('primary-btn-disabled');
+            allInputs.forEach(input => {
+                input.disabled = false;
+                input.checked = false;
+                input.parentNode.classList.remove('incorrect-ans');
+                input.parentNode.classList.remove('correct-ans');
+            })
         })
-    })
+    }
 }
 
 
@@ -154,8 +260,8 @@ var clearSingleQuestionSetCheckbox = function(e) {
 
     explanation.classList.remove('incorrect-explanation');
     explanation.classList.remove('correct-explanation');
-    var img = document.querySelectorAll(`.explanation img`);
-    var b = document.querySelectorAll(`.explanation b`);
+    var img = document.querySelectorAll(`.${clickedButton.split(" ")[1]}.explanation img`);
+    var b = document.querySelectorAll(`.${clickedButton.split(" ")[1]}.explanation b`);
 
     img.forEach(i => {
         i.remove();
@@ -231,14 +337,14 @@ var validateSingleCheckboxQuestionSet = function(e) {
         var img = document.createElement('img');
         var b = document.createElement('b');
         if (status === 'correct') {
-            b.innerHTML = 'Correct: ';
+            b.innerHTML = 'Correct. ';
             img.src = "./imgs/correct.png";
             img.className = "status-icon";
 
             explanation.className += ' correct-explanation';
 
         } else {
-            b.innerHTML = 'Incorrect: ';
+            b.innerHTML = 'Incorrect. ';
             img.src = "./imgs/incorrect.png";
             img.className = "status-icon";
             explanation.className += ' incorrect-explanation';
@@ -253,9 +359,9 @@ var validateSingleRadioQuestionSet = function(e) {
     checkedRadio = document.querySelector(`input[type=radio]:checked.${e.target.className.split(" ")[1]}`);
     var allRadio = document.querySelectorAll(`input[type=radio].${e.target.className.split(" ")[1]}`);
 
+
+    console.log(checkedRadio, checkedRadio.getAttribute("data-checked"))
     if (checkedRadio != null) {
-
-
         var correctRadio;
         allRadio.forEach(ar => {
             if (ar) {
@@ -266,11 +372,9 @@ var validateSingleRadioQuestionSet = function(e) {
             }
         });
 
-
         e.target.disabled = true;
         e.target.className += ' primary-btn-disabled';
         var status = 'incorrect'
-
 
         if (checkedRadio && checkedRadio.getAttribute("data-checked")) {
             correctRadio.parentNode.className += " correct-ans";
@@ -281,26 +385,24 @@ var validateSingleRadioQuestionSet = function(e) {
         }
 
         explanation = document.querySelector(`.explanation.${checkedRadio.getAttribute('class')}`);
-        console.log(explanation);
         explanation.style.display = 'block';
 
         var img = document.createElement('img');
         var b = document.createElement('b');
         if (status === 'correct') {
-            b.innerHTML = 'Correct: ';
+            b.innerHTML = 'Correct. ';
             img.src = "./imgs/correct.png";
             img.className = "status-icon";
             explanation.className += ' correct-explanation';
 
         } else {
-            b.innerHTML = 'Incorrect: ';
+            b.innerHTML = 'Incorrect. ';
             img.src = "./imgs/incorrect.png";
             img.className = "status-icon";
             explanation.className += ' incorrect-explanation';
         }
         explanation.prepend(b)
         explanation.prepend(img);
-
     }
 }
 
@@ -309,8 +411,6 @@ var validateSingleRadioQuestionSet = function(e) {
 var groupCheckboxesQuestions = function() {
     // 1. select all checked options
     checkedCheckboxes = document.querySelectorAll('input[type=checkbox]:checked');
-
-
     // 2. group all options
     for (var i = 0; i < 100; i++) {
         if (document.querySelector(`.checkbox-${i}`)) {
@@ -329,6 +429,17 @@ var groupRadioQuestions = function() {
     }
 }
 
+var groupSelectQuestions = function() {
+    // 1. select all select options
+    checkedSelect = document.querySelectorAll('select');
+    // 2. group all options
+    for (var i = 0; i < 100; i++) {
+        if (document.querySelector(`.select-${i}`)) {
+            groupedSelectOptions.push(document.querySelectorAll(`.select-${i}`));
+
+        }
+    }
+}
 
 var validateMultipleQuestionSet = function() {
     var countCorrect = 0;
@@ -355,10 +466,8 @@ var validateMultipleQuestionSet = function() {
         }
     }
 
-
     var checkedNodes = [];
     var status = 'correct';
-
 
     checkedCheckboxes.forEach(c => {
         if (c.getAttribute('data-checked') === "checked") {
@@ -366,11 +475,9 @@ var validateMultipleQuestionSet = function() {
             label.parentNode.className += ' correct-ans';
 
         } else {
-            // console.log(c, 'incorrect');
             var label = document.querySelector(`label[for=${c.getAttribute('id')}]`);
             label.parentNode.className += ' incorrect-ans';
             status = 'incorrect'
-
         }
     });
 
@@ -409,7 +516,6 @@ var validateMultipleQuestionSet = function() {
         });
     });
 
-    // console.log(groupedCheckboxes);
 
     groupedCheckboxes.forEach(gc => {
         gc.forEach(c => {
@@ -417,33 +523,10 @@ var validateMultipleQuestionSet = function() {
         });
     })
 
-    // var explanations = document.querySelectorAll('.explanation');
-
-    // explanations.forEach(exp => {
-
-    //     exp.style.display = 'block';
-
-    //     var img = document.createElement('img');
-    //     var b = document.createElement('b');
-    //     if (status === 'correct') {
-    //         b.innerHTML = 'Correct: ';
-    //         img.src = "./imgs/correct.png";
-    //         img.className = "status-icon";
-    //         exp.className += ' correct-explanation';
-
-    //     } else {
-    //         b.innerHTML = 'Incorrect: ';
-    //         img.src = "./imgs/incorrect.png";
-    //         img.className = "status-icon";
-    //         exp.className += ' incorrect-explanation';
-    //     }
-    //     exp.prepend(b)
-    //     exp.prepend(img);
-    // });
     var btn = document.querySelector('.multi-primary-btn');
     btn.disabled = true;
     btn.className += ' primary-btn-disabled';
 
-    console.log("STATUS: ", status, " Correct: ", countCorrect);
+    console.log("STATUS: ", status, " Correct. ", countCorrect);
 
 }

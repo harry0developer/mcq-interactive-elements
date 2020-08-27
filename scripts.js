@@ -58,14 +58,17 @@ window.onload = function() {
             });
 
 
-            if (questionObj.type === "SINGLE") {
+            if (questionObj.type.toLowerCase() === "single") {
                 var res = generateInputTypeQuestion('radio', i, questionObj);
                 htmlQuizCollection.push(res);
-            } else if (questionObj.type === "MULTI") {
+            } else if (questionObj.type.toLowerCase() === "multi") {
                 var res = generateInputTypeQuestion('checkbox', i, questionObj);
                 htmlQuizCollection.push(res);
-            } else if (questionObj.type === "SHORT") {
+            } else if (questionObj.type.toLowerCase() === "short") {
                 // this.generateShortQuestion();
+            } else if (questionObj.type.toLowerCase() === "select") {
+                var res = generateInputTypeQuestion('select', i, questionObj);
+                htmlQuizCollection.push(res);
             }
 
         });
@@ -98,7 +101,7 @@ window.onload = function() {
 
     var generateInputTypeQuestion = function(type, index, obj) {
         var questions = document.querySelector(".questions");
-        if (type == "radio") {
+        if (type.toLowerCase() == "radio") {
             var qdiv = document.createElement("div");
             if (questionType.toLowerCase() === 'single') {
                 qdiv.className = "question single question-" + index;
@@ -111,31 +114,18 @@ window.onload = function() {
             questionDiv.className = 'question';
             questionPara.innerHTML = `<b>Question ${index+1}: </b> ${obj.question}`;
 
-            // questions.appendChild(questionPara);
             qdiv.appendChild(questionPara);
 
             var options = obj.options.trim().split("|");
             var correctAnswer = getAnswerNumber(obj);
 
+            console.log(correctAnswer);
             options.forEach((opt, i) => {
-
-                // var inputItem = document.createElement('input');
-                // inputItem.type = type;
-                // inputItem.name = `question-option-${index}`;
-                // inputItem.id = `question-${index}-${i}`;
-                // inputItem.value = opt.trim();
-
-                // var type = type;
-
                 var name = `question-option-${index}`;
                 var id = `question-${index}-${i}`;
                 var value = opt.trim();
-
-                //let doc = domparser.parseFromString(`<input type="${type}" name="${name}" id="${id}" value="${value}" />`, 'text/xml');
-                // var inputTag = doc.firstChild;
                 var inputTag = createInputTag(type, name, id, value, "");
 
-                // console.log(inputTag);
                 var inputItem = inputTag;
 
                 if (correctAnswer === i) {
@@ -177,7 +167,7 @@ window.onload = function() {
 
             questions.appendChild(qdiv);
 
-        } else {
+        } else if (type.toLowerCase() == "checkbox") {
 
             var qdiv = document.createElement("div");
             if (questionType.toLowerCase() === 'single') {
@@ -268,6 +258,96 @@ window.onload = function() {
                 qdiv.appendChild(secBtn);
             }
             questions.appendChild(qdiv);
+        } else if (type.toLowerCase() == "select") {
+            var qdiv = document.createElement("div");
+            if (questionType.toLowerCase() === 'single') {
+                qdiv.className = "question single question-" + index;
+            } else {
+                qdiv.className = "question multi question-" + index;
+            }
+
+
+            var outerParagraph = document.createElement('p');
+            // Create a nested paragraph containing select input
+            var innerParagraph = document.createElement('p');
+
+            var question = obj.question.split("[]");
+
+            var options = obj.options.split("|");
+            var answers = obj.answer.split(",");
+            console.log(answers);
+            // inputItem.setAttribute('data-checked', 'checked');
+            var selectInput = document.createElement('select');
+            selectInput.className = `select-${index}`;
+
+
+            var blankOption = document.createElement('option');
+            blankOption.setAttribute("value", "");
+            var optionText = document.createTextNode("");
+            blankOption.appendChild(optionText);
+            selectInput.appendChild(blankOption);
+
+            options.forEach((opt, i) => {
+                var selectInputOptions = document.createElement('option');
+                selectInputOptions.setAttribute("value", opt.trim());
+                var optionText = document.createTextNode(opt.trim());
+                selectInputOptions.appendChild(optionText);
+
+                answers.forEach(a => {
+                    if (a.toLowerCase() === 'a' && i === 0) {
+                        selectInputOptions.setAttribute('data-checked', 'checked');
+                    }
+                    if (a.toLowerCase() === 'b' && i === 1) {
+                        selectInputOptions.setAttribute('data-checked', 'checked');
+                    }
+                    if (a.toLowerCase() === 'c' && i === 2) {
+                        selectInputOptions.setAttribute('data-checked', 'checked');
+                    }
+                    if (a.toLowerCase() === 'd' && i === 3) {
+                        selectInputOptions.setAttribute('data-checked', 'checked');
+                    }
+                    if (a.toLowerCase() === 'e' && i === 4) {
+                        selectInputOptions.setAttribute('data-checked', 'checked');
+                    }
+                    if (a.toLowerCase() === 'f' && i === 5) {
+                        selectInputOptions.setAttribute('data-checked', 'checked');
+                    }
+                    if (a.toLowerCase() === 'g' && i === 6) {
+                        selectInputOptions.setAttribute('data-checked', 'checked');
+                    }
+                });
+
+                selectInput.appendChild(selectInputOptions);
+            });
+
+
+            var createQuestionNumber = document.createElement("b");
+            createQuestionNumber.innerText = `Question ${index+1}: Select the correct answer`;
+            var text1 = document.createTextNode(`${question[0]}`);
+            var text2 = document.createTextNode(`${question[1]}`);
+            outerParagraph.appendChild(createQuestionNumber);
+            innerParagraph.appendChild(text1);
+            innerParagraph.appendChild(selectInput);
+            innerParagraph.appendChild(text2);
+            outerParagraph.appendChild(innerParagraph);
+            qdiv.appendChild(outerParagraph);
+
+
+            var explanation = document.createElement("p");
+            explanation.className = `explanation select-${index}`;
+            explanation.innerText = obj.explanation;
+            qdiv.appendChild(explanation);
+
+            if (questionType.toLowerCase() === 'single') {
+                var primaryBtnClasses = 'primary-btn ' + `select-${index}`;
+                var secBtnClasses = 'secondary-btn ' + `select-${index}`;
+                var primaryBtn = addButton('Check answer', primaryBtnClasses);
+                var secBtn = addButton('Clear answer', secBtnClasses);
+                qdiv.appendChild(primaryBtn);
+                qdiv.appendChild(secBtn);
+            }
+            questions.appendChild(qdiv);
+
         }
         return questions;
     }
@@ -296,11 +376,6 @@ window.onload = function() {
         } else {
             return -999;
         }
-    }
-
-    writeToFile = function(text) {
-        let blob = new Blob([text[0].outerHTML], { type: 'plain/text' });
-        link.href = URL.createObjectURL(blob);
     }
 
     createHTMLOutput = function(text) {

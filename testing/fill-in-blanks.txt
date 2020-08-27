@@ -1,0 +1,25 @@
+Q: Students can use [] for accessing electronic study content
+O: Phamapedia | Evolve | eJuta | POPIA
+A: C
+R: eJuta is a platform for students
+T: SELECT
+ 
+
+Q: Which of the following is a valid colour?
+O: Dark | Light | Blank | Orange
+A: D
+R: Orange is a valid colour
+T: SINGLE
+
+Q: Which of these are fruits?
+O: Cabbage | Tomato | Apple | Maize
+A: C
+R: 
+T: MULTI
+
+
+Q: [] is used for legal research
+O: Phamapedia | Evolve | eJuta | POPIA
+A: B
+R: Evolve is used for research
+T: SELECT
